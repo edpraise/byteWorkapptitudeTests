@@ -1,6 +1,11 @@
+// @dart=2.9
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sqflite_database_example/db/notes_database.dart';
+import 'package:sqflite_database_example/features/constants/colors.dart';
 import 'package:sqflite_database_example/model/note.dart';
 import 'package:sqflite_database_example/page/edit_note_page.dart';
 import 'package:sqflite_database_example/page/note_detail_page.dart';
@@ -12,7 +17,9 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> {
-  late List<Note> notes;
+  
+  /////////////////
+  List<Note> notes;
   bool isLoading = false;
 
   @override
@@ -40,25 +47,41 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
-            'Notes',
+            'Welcome Admin',
             style: TextStyle(fontSize: 24),
           ),
-          actions: [Icon(Icons.search), SizedBox(width: 12)],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.search),
+            ),
+            SizedBox(width: 12)
+          ],
         ),
         body: Center(
           child: isLoading
               ? CircularProgressIndicator()
               : notes.isEmpty
-                  ? Text(
-                      'No Notes',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'No Employee, ',
+                          style: TextStyle(color: Colors.white, fontSize: 19),
+                        ),
+                        Text(
+                          'click the button Below to add',
+                          style: TextStyle(color: Colors.white, fontSize: 10),
+                        )
+                      ],
                     )
                   : buildNotes(),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.black,
-          child: Icon(Icons.add),
+          backgroundColor: primaryColor,
+          child: Icon(Icons.person),
           onPressed: () async {
             await Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => AddEditNotePage()),
@@ -82,7 +105,7 @@ class _NotesPageState extends State<NotesPage> {
           return GestureDetector(
             onTap: () async {
               await Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => NoteDetailPage(noteId: note.id!),
+                builder: (context) => NoteDetailPage(noteId: note.id),
               ));
 
               refreshNotes();

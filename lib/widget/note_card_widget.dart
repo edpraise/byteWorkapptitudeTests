@@ -3,10 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:sqflite_database_example/model/note.dart';
 
 final _lightColors = [
-  Colors.amber.shade300,
-  Colors.lightGreen.shade300,
+  Colors.white,
+  Colors.red,
   Colors.lightBlue.shade300,
-  Colors.orange.shade300,
+  Colors.tealAccent,
   Colors.pinkAccent.shade100,
   Colors.tealAccent.shade100
 ];
